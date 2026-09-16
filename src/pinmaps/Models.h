@@ -91,14 +91,13 @@
   #define PINMAP_STR "SAL-XB1"
   #include "Pins.SAL_XB1.h"
 #endif
-#ifndef PINMAP_STR
-  #define PINMAP_STR "Unknown"
-#endif
 #if PINMAP == RP2040_ZERO
   #define PINMAP_STR "RP2040 Zero"
   #include "Pins.RP2040_ZERO.h"
 #endif
-
+#ifndef PINMAP_STR
+  #define PINMAP_STR "Unknown"
+#endif
 
 // all unassigned pins OFF
 #include "Pins.defaults.h"
