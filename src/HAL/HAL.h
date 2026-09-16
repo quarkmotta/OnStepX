@@ -147,10 +147,15 @@
   #define MCU_STR "TeensyMicroMod"
   #include "teensy/Teensy4.1.h"
 
-#elif defined(ARDUINO_ARCH_RP2040)
+#elif defined(ARDUINO_ARCH_RP2040) && defined(ARDUINO_ARCH_MBED)
   // Raspberry pi pico
   #define MCU_STR "Raspberry Pi Pico"
   #include "mbed/Rpi2040.h"
+
+#elif defined(ARDUINO_ARCH_RP2040)
+  // RP2040 using Earle Philhower Arduino-Pico core
+  #define MCU_STR "RP2040 Arduino-Pico"
+  #include "rp2040/RP2040.h"
 
 #elif defined(ARDUINO_ARCH_RP2350)
   // Raspberry pi pico2

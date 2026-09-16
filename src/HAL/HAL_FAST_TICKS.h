@@ -72,6 +72,14 @@ extern uint32_t _halTicksPerMicro;
   #define HAL_IS_ESP32_XTENSA 0
 #endif
 
+// RP2040 detection
+#if defined(ARDUINO_ARCH_RP2040) && !defined(ARDUINO_ARCH_MBED)
+  #define HAL_IS_RP2040 1
+#else
+  #define HAL_IS_RP2040 0
+#endif
+
+
 // ----------------------------------------
 // Platform-specific fast tick source
 // ----------------------------------------
@@ -206,6 +214,31 @@ static inline uint32_t IRAM_ATTR HAL_FAST_TICKS() {
     return (uint32_t)micros();        // fallback
   #endif
 }
+
+// ---------- RP2040: hardware timer / microsecond counter ----------
+#elif HAL_IS_RP2040
+
+static inline void HAL_FAST_TICKS_INIT() {
+
+  /*
+   * Arduino-Pico's micros() is based on the RP2040 hardware timer.
+   *
+   * Keep the public OnStepX tick unit in microseconds. This gives
+   * deterministic 1 MHz wrapping timestamps while avoiding assumptions
+   * about the selected RP2040 system clock.
+   */
+  _halTicksPerSecond = 1000000UL;
+  _halTicksPerMicro  = 1;
+}
+
+static inline uint32_t HAL_TICKS_PER_SECOND() {
+  return _halTicksPerSecond;
+}
+
+static inline uint32_t IRAM_ATTR HAL_FAST_TICKS() {
+  return (uint32_t)micros();
+}
+
 
 #else
 

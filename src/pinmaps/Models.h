@@ -94,6 +94,11 @@
 #ifndef PINMAP_STR
   #define PINMAP_STR "Unknown"
 #endif
+#if PINMAP == RP2040_ZERO
+  #define PINMAP_STR "RP2040 Zero"
+  #include "Pins.RP2040_ZERO.h"
+#endif
+
 
 // all unassigned pins OFF
 #include "Pins.defaults.h"
