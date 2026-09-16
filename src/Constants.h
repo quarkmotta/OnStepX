@@ -42,7 +42,9 @@
 
 #define SAL_XB1                     24     // SAL-XB1 telescope mount controller
 
-#define PINMAP_LAST                 24
+#define RP2040_Pico                 25
+
+#define PINMAP_LAST                 25
 
 // WEATHER sensors (temperature, pressure, and humidity)
 #define WEATHER_FIRST               1
