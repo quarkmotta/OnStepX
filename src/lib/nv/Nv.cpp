@@ -1,15 +1,14 @@
 // Nv.cpp
 #include "Nv.h"
-
 #include <Wire.h>
-
 #include "../tasks/OnTask.h"
 
 // -------------------- Backend type selection (per driver) --------------------
-
+// #warning "### INIT EepromArduino.h ###";
 #if (NV_DRIVER == NV_EEPROM)
-
   #include "device/EepromArduino.h"
+  // #warning "### USING EepromArduino.h FOR NV_EEPROM ###"
+  // Serial.println("### USING EepromArduino.h FOR NV_EEPROM ###");
   using NvBackend = NvDeviceEepromArduino;
 
 #elif (NV_DRIVER == NV_ESP)
@@ -130,6 +129,32 @@ void nvServices() {
   nv().poll();
 }
 
+// static void dumpNvBlock(uint16_t block)
+// {
+//   uint8_t b[16];
+
+//   NvDevice::IoStatus s =
+//       nvActive->read((uint16_t)(block * 16u), b, 16);
+
+//   Serial.print("### NV BLOCK ");
+//   Serial.print(block);
+//   Serial.print(" status=");
+//   Serial.println((int)s);
+
+//   for (uint16_t addr = 0; addr < 64; ++addr) {
+//     uint8_t b = EEPROM.read(addr);
+
+//     if (b < 16) Serial.print('0');
+//     Serial.print(b, HEX);
+//     Serial.print(' ');
+
+//     if ((addr & 15) == 15)
+//       Serial.println();
+//   }
+
+//   Serial.println();
+// }
+
 bool NvSystem::init(uint8_t priorityLevel) {
   if (ok_) return true;
 
@@ -139,11 +164,32 @@ bool NvSystem::init(uint8_t priorityLevel) {
   #endif
 
   // Init active layer (shim init may call down into device init)
-  if (!nvActive->init()) return false;
+  if (!nvActive->init()) { return false; }
+
 
   // Bind volume to active device/shim (does not mount/format)
+  // const NvVolume::Status st = nvVolume.init(*nvActive);
+  // if (st != NvVolume::Status::Ok) return false;
+
+  // Serial.println("### NV: backend init OK ###");
+
   const NvVolume::Status st = nvVolume.init(*nvActive);
-  if (st != NvVolume::Status::Ok) return false;
+
+  // Serial.print("### NV: volume.init status = ");
+  // Serial.println((int)st);
+
+  // Serial.print("### NV: sizeBytes = ");
+  // Serial.println((unsigned long)nvActive->sizeBytes());
+
+  if (st != NvVolume::Status::Ok) {
+    // Serial.println("### NV: VOLUME INIT FAILED ###");
+    return false;
+  }
+
+  // Serial.println("### NV: VOLUME INIT OK ###");
+
+  // dumpNvBlock(0);
+  // dumpNvBlock(1);
 
   uint32_t pollingRate = NV_SVC_MS;
 

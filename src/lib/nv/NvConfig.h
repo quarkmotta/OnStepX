@@ -58,6 +58,22 @@
   #endif
 #endif
 
+/*
+ * --------------------------------------------------------------------------
+ * EEPROM geometry
+ * --------------------------------------------------------------------------
+ */
+
+#if defined(ARDUINO_ARCH_RP2040)
+  #define NV_EEPROM_RP2040 1
+  #define NV_EEPROM_SIZE 4096u
+#elif defined(E2END)
+  #define NV_EEPROM_RP2040 0
+  #define NV_EEPROM_SIZE ((uint32_t)(E2END) + 1u)
+#else
+  #define NV_EEPROM_RP2040 0
+#endif
+
 // ---- Default shim selection for emulated EEPROM backends -----------------------
 #if NV_DRIVER == NV_EEPROM
   #ifndef NV_SHIM
