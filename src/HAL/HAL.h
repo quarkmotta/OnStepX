@@ -152,9 +152,10 @@
   #define MCU_STR "Raspberry Pi Pico"
   #include "mbed/Rpi2040.h"
 
-#elif defined(ARDUINO_ARCH_RP2040)
+#elif defined(ARDUINO_ARCH_RP2040) || defined(ARDUINO_WAVESHARE_RP2040_ZERO) 
   // RP2040 using Earle Philhower Arduino-Pico core
-  #define MCU_STR "RP2040 Arduino-Pico"
+  //SERIAL_DEBUG.println("Starting RP2040..");
+  #define MCU_STR "RP2040-Zero"
   #include "rp2040/RP2040.h"
 
 #elif defined(ARDUINO_ARCH_RP2350)

@@ -33,7 +33,8 @@
 // Non-volatile storage ----------------------------------------------------------------------------
 #if NV_DRIVER == NV_DEFAULT
   #undef NV_DRIVER
-  #define NV_DRIVER NV_AT24C32
+  #define E2END 1023
+  #define NV_DRIVER NV_EEPROM
 #endif
 
 namespace OnStepRP2040 {
