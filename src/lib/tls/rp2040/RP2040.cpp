@@ -1,19 +1,19 @@
 // -----------------------------------------------------------------------------------
 // Time/Location source TEENSY 3.2 RTC support
 
-#include "Teensy.h"
+#include "RP2040.h"
 
-#if defined(TIME_LOCATION_SOURCE) && TIME_LOCATION_SOURCE == TEENSY || \
-    (defined(TIME_LOCATION_SOURCE_FALLBACK) && TIME_LOCATION_SOURCE_FALLBACK == TEENSY)
+#if defined(TIME_LOCATION_SOURCE) && TIME_LOCATION_SOURCE == RP2040 || \
+    (defined(TIME_LOCATION_SOURCE_FALLBACK) && TIME_LOCATION_SOURCE_FALLBACK == RP2040)
 
 #include "../../timelib/TimeLib.h" // https://github.com/PaulStoffregen/Time/archive/master.zip
 
-bool TlsTeensy::init() {
+bool TlsRp2040::init() {
   ready = true;
   return ready;
 }
 
-void TlsTeensy::set(JulianDate ut1) {
+void TlsRp2040::set(JulianDate ut1) {
   GregorianDate greg = calendars.julianDayToGregorian(ut1);
 
   double f1 = fabs(ut1.hour) + TLS_CLOCK_SKEW;
@@ -24,17 +24,17 @@ void TlsTeensy::set(JulianDate ut1) {
   set(greg.year, greg.month, greg.day, h, floor(m), floor(s));
 }
 
-void TlsTeensy::set(int year, int month, int day, int hour, int minute, int second) {
+void TlsRp2040::set(int year, int month, int day, int hour, int minute, int second) {
   setTime(hour, minute, second, day, month, year);
-  unsigned long TeensyTime = now();              // get time in epoch
-  Teensy3Clock.set(TeensyTime);                  // set Teensy time
+  unsigned long Rp2040Time = now();              // get time in epoch
+  Rp2040Clock.set(Rp2040Time);                  // set Teensy time
 }
 
-bool TlsTeensy::get(JulianDate &ut1) {
+bool TlsRp2040::get(JulianDate &ut1) {
   if (!ready) return false;
   
-  unsigned long TeensyTime = Teensy3Clock.get(); // get time from Teensy RTC
-  setTime(TeensyTime);                           // set system time
+  unsigned long Rp2040Time = Rp2040Clock.get(); // get time from Teensy RTC
+  setTime(Rp2040Time);                           // set system time
 
   if (year() >= 0 && year() <= 3000 && month() >= 1 && month() <= 12 && day() >= 1 && day() <= 31 &&
       hour() <= 23 && minute() <= 59 && second() <= 59) {

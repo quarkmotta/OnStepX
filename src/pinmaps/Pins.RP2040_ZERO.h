@@ -34,6 +34,11 @@
 
 #define LIMIT_SENSE_PIN 9
 
+#ifndef MATRIX_STATUS_LED
+    #define MATRIX_STATUS_LED ON
+    #define NUM_LEDS 1
+#endif
+
 #define STATUS_LED_PIN 16
 #define MOUNT_LED_PIN STATUS_LED_PIN
 #define RETICLE_LED_PIN STATUS_LED_PIN

@@ -9,5 +9,6 @@
 #include "ntp/NTP.h"
 #include "sd3031/SD3031.h"
 #include "teensy/Teensy.h"
+#include "rp2040/RP2040.h"
 
 #include "PPS.h"

@@ -30,6 +30,7 @@
 #include "rotator/Rotator.h"
 #include "focuser/Focuser.h"
 #include "auxiliary/Features.h"
+#include "../lib/neopixel/Adafruit_NeoPixel.h"
 
 bool xBusy = false;
 InitError initError;
@@ -56,11 +57,41 @@ void mcuTempWrapper() { telescope.mcuTemperature = (telescope.mcuTemperature*9.0
 
     int pin = STATUS_LED_PIN;
  
-    // everything is ok, turn on LED and exit
-    if (flashes == 0) { digitalWriteEx(pin, STATUS_LED_ON_STATE); return; }
+    #if defined(MATRIX_STATUS_LED)
+      Adafruit_NeoPixel pixel(NUM_LEDS, pin, NEO_GRB + NEO_KHZ800);
+      pixel.begin();
+      pixel.setBrightness(30);
+      pixel.clear();
+      pixel.show();
+    #endif
 
+    // everything is ok, turn on LED and exit
+    if (flashes == 0) { 
+      #if defined(MATRIX_STATUS_LED)
+        pixel.setPixelColor(0, pixel.Color(255, 0, 0));
+        pixel.show();
+        delay(500);
+        pixel.clear();
+        pixel.show();
+      #else
+        digitalWriteEx(pin, STATUS_LED_ON_STATE); return; 
+      #endif
+    }
     // flash the LED if there's an error
-    if (cycle%2 == 0) { digitalWriteEx(pin, !STATUS_LED_ON_STATE); } else { if (cycle/2 < flashes) digitalWriteEx(pin, STATUS_LED_ON_STATE); }
+    if (cycle%2 == 0) { 
+      #if defined(MATRIX_STATUS_LED)
+        if(!STATUS_LED_ON_STATE){
+          pixel.setPixelColor(0, pixel.Color(255, 0, 0));
+          pixel.show();
+          delay(500);
+        }else{
+          pixel.clear();
+          pixel.show();
+        }
+      #else
+        digitalWriteEx(pin, !STATUS_LED_ON_STATE); } else { if (cycle/2 < flashes) digitalWriteEx(pin, STATUS_LED_ON_STATE); 
+      #endif
+      }
   }
 #endif
 

@@ -56,7 +56,7 @@
 #include "OnTask.h"
 
 #if SHOW_TASKS_PROFILER_EVERY_SEC == ON
-  #include "profiler.h"
+  // #include "profiler.h"
 #endif
 
 // handles to keep track of tasks
@@ -117,7 +117,7 @@ void setup() {
 
   // create/start a task to show the profiler at work
 #if SHOW_TASKS_PROFILER_EVERY_SEC == ON
-  profilerHandle = tasks.add(250, 0, true, 2, profiler, "Profilr");
+  // profilerHandle = tasks.add(250, 0, true, 2, profiler, "Profilr");
   Serial.println("Profiler:  running every second");
   Serial.println();
 #endif
