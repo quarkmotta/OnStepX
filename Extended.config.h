@@ -36,3 +36,5 @@
                                           //              ***     WEAR AND DAMAGE THE MICROCONTROLLER NV SUBSYSTEM !!!        ***
 
 // ---------------------------------------------------------------------------------------------------------------------------------
+#define DEBUG_STEPDIR_ACCEL 1
+#define DEBUG_STEPDIR_POSITION 1
