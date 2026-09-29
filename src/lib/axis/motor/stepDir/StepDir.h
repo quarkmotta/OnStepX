@@ -78,6 +78,17 @@ class StepDirMotor : public Motor {
     // get movement frequency in steps per second
     float getFrequencySteps();
 
+    // diagnostic count of STEP pulses actually generated
+    uint32_t getStepPulseCount() const {
+      return stepPulseCount;
+    }
+
+    void resetStepPulseCount() {
+      noInterrupts();
+      stepPulseCount = 0;
+      interrupts();
+    }
+
     // set frequency (+/-) in steps per second negative frequencies move reverse in direction (0 stops motion)
     void setFrequencySteps(float frequency);
 
@@ -163,6 +174,8 @@ class StepDirMotor : public Motor {
 
     volatile int16_t stepSize = 1;       // step size during slews (for microstep mode switching)
     volatile bool takeStep = false;      // should we take a step
+    volatile uint32_t stepPulseCount = 0;
+
 
     float currentFrequency = 0.0F;       // last frequency set 
     float lastFrequency = 0.0F;          // last frequency requested in tracking mode microsteps per second

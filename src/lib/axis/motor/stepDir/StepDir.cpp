@@ -478,6 +478,7 @@ IRAM_ATTR void StepDirMotor::move(const int16_t stepPin) {
       if (axisNumber > 2) { digitalWriteF(Pins->dir, direction); delayNanoseconds(pulseWidth); }
     #endif
     digitalWriteF(stepPin, stepSet);
+    stepPulseCount++;
   } else
 
   if (motorSteps < targetSteps || (inBacklash && direction == dirFwd)) {
@@ -504,6 +505,7 @@ IRAM_ATTR void StepDirMotor::move(const int16_t stepPin) {
       if (axisNumber > 2) { digitalWriteF(Pins->dir, direction); delayNanoseconds(pulseWidth); }
     #endif
     digitalWriteF(stepPin, stepSet);
+    stepPulseCount++;
 
   } else if (!inBacklash) direction = DirNone;
 
@@ -533,6 +535,7 @@ IRAM_ATTR void StepDirMotor::moveFF(const int16_t stepPin) {
       if (axisNumber > 2) { digitalWriteF(Pins->dir, direction); delayNanoseconds(pulseWidth); }
     #endif
     digitalWriteF(stepPin, stepSet);
+    stepPulseCount++;
   }
 
   #if STEP_WAVE_FORM == SQUARE
@@ -561,6 +564,7 @@ IRAM_ATTR void StepDirMotor::moveFR(const int16_t stepPin) {
       if (axisNumber > 2) { digitalWriteF(Pins->dir, direction); delayNanoseconds(pulseWidth); }
     #endif
     digitalWriteF(stepPin, stepSet);
+    stepPulseCount++;
   }
 
   #if STEP_WAVE_FORM == SQUARE

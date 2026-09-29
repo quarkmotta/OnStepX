@@ -198,7 +198,25 @@ bool Axis::command(char *reply, char *command, char *parameter, bool *suppressFr
 
       } else *commandError = CE_PARAM_RANGE;
     } else return false;
-  } else return false;
+  } else 
+    if (parameter[0] == 'S' &&
+        parameter[1] == 'T' &&
+        parameter[2] >= '1' &&
+        parameter[2] <= '9' &&
+        parameter[3] == 0) {
+
+      int index = parameter[2] - '1';
+
+      if (index + 1 != axisNumber)
+        return false;
+
+      sprintf(reply, "%lu",
+              (unsigned long)motor->getStepPulseCount());
+
+      *numericReply = false;
+      return true;
+    }
+  }else return false;
 
   return true;
 }
